@@ -13,7 +13,7 @@ int current_quality =-1;
 
 void setup()
 {
-    Serial.begin(9600);
+    Serial.begin(115200);
     setupDust();
     airqualitysensor.init(14);
     dht.begin();

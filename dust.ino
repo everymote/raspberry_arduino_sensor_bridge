@@ -23,13 +23,29 @@ void setupDust(){
 void reportDust(){
 
   if(newValue){
+    sendJsonData();
+    /*
     Serial.print("{\"type\":\"dust\",\"quantity\":"); 
     Serial.print(quantity);
     Serial.print(",\"rate\":");
     Serial.print(rate,8);
-    Serial.println("}");
+    Serial.println("}");*/
     newValue = false;
   }
+  
+  
+}
+
+void sendJsonData(){
+    /* Serial.print("{\"type\":\"dustLOP\",\"value\":"); 
+     Serial.print(lowpulseoccupancy);
+     Serial.println("}");*/
+     Serial.print("{\"type\":\"dustConcentration\",\"value\":"); 
+     Serial.print(quantity);
+     Serial.println("}");
+     Serial.print("{\"type\":\"dustRatio\",\"value\":"); 
+     Serial.print(rate,8);
+     Serial.println("}");
 }
 
 ISR(TIMER1_OVF_vect)
@@ -42,12 +58,14 @@ ISR(TIMER1_OVF_vect)
       if(rate<=8)
       {
 	quantity=rate*562.5;//8 equal 4500 pcs Particle according to the datasheet.
-        newValue = true;
+        
       }
-      else
+      else{
 	quantity=4500+(rate-8)*750;
-        time_sum=0;
       }
+        time_sum=0;
+        newValue = true;
+   }
   else
     {
 	ov_counter++;
